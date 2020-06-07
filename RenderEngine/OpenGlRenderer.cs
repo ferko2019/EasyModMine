@@ -10,6 +10,7 @@ using EasyModMine.RenderEngine;
 using EasyModMine.BuiltInGameLogic;
 using System.IO;
 using _3DVoxelEngine.GameLogic;
+using OpenTK.Input;
 using EasyModMine.Mods.Default.Scripts;
 
 namespace EasyModMine.RenderEngine
@@ -34,10 +35,13 @@ namespace EasyModMine.RenderEngine
         public int NOB;
         public Vector3[] normalBuffer = new Vector3[0];
 
-        //Texture
+        //Textures
 
-        public Texture2D texture = new Texture2D(0,Vector2.Zero);
+        public Texture2D[] textures = new Texture2D[0];
 
+        //Colors
+
+        public Color[] colors = new Color[0];
 
         //Render settings
         public bool ImmediateRendering = false;
@@ -46,6 +50,9 @@ namespace EasyModMine.RenderEngine
         //Player data
 
         public Vector3 player_pos;
+        public Vector2 lastMousePos;
+
+        Input input = new Input();
 
         //Level
 
@@ -80,7 +87,8 @@ namespace EasyModMine.RenderEngine
 
         void loaded(object o, EventArgs e)
         {
-            texture = LoadResources.ReadTexture(Directory.GetCurrentDirectory() + @"\Mods\Default\Textures\earth.jpg");
+            input.lastPos = new Vector2(Mouse.GetCursorState().X, Mouse.GetCursorState().Y);
+            //texture = LoadResources.ReadTexture(Directory.GetCurrentDirectory() + @"\Mods\Default\Textures\earth.jpg");
             //Change clear color
             GL.ClearColor(Color.Black);
             //Render polygons in a correct order
@@ -111,10 +119,23 @@ namespace EasyModMine.RenderEngine
             GL.BufferData<Vector3>(BufferTarget.ArrayBuffer, (IntPtr)(Vector3.SizeInBytes * normalBuffer.Length),
                 normalBuffer, BufferUsageHint.DynamicDraw);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            level = LevelGenerator.GenerateTerrain3D(20, 20, 20, .05f, 0, .5f);
+            //Console.WriteLine(renderer.level.Length);
+            Modell combined = CombineModells.Combine(CombineModells.GameObjectToModellArray(Init.ChunksToGameObjects(Init.NearChunck(level.ToArray(), player_pos, 9999)).ToArray()));
+            //Console.WriteLine(combined.vertices.Length);
+            //Console.WriteLine(combined.uv.Length);
+            //Console.WriteLine(combined.normal.Length);
+            
+            UpdateBuffers(combined.vertices, combined.uv, combined.normal, combined.textures, combined.colors);
         }
 
         void renderFrame(object o,FrameEventArgs e)
         {
+            Vector2 mouseDelta = input.MouseDelta();
+            float sensitivity = .1f;
+            //GL.Rotate(mouseDelta.Y * sensitivity, 1, 0, 0);
+            GL.Rotate(mouseDelta.X * sensitivity, 0, 1, 0);
             // Clear screen
             Vector3 move = Input.GetMoveDir(.1f);
             GL.Translate(move);
@@ -123,8 +144,6 @@ namespace EasyModMine.RenderEngine
             //Render image
 
             //Enable thing before use
-            GL.BindTexture(TextureTarget.Texture2D, texture.ID);
-            GL.Enable(EnableCap.Texture2D);
             GL.Enable(EnableCap.TextureCoordArray);
             //Setup blending
             GL.Enable(EnableCap.Blend);
@@ -144,6 +163,9 @@ namespace EasyModMine.RenderEngine
                 {
                     GL.Normal3(normalBuffer[i]);
                     GL.TexCoord2(uvBuffer[i]);
+                    GL.BindTexture(TextureTarget.Texture2D, textures[i].ID);
+                    GL.Enable(EnableCap.Texture2D);
+                    GL.Color4(colors[i]);
                     GL.Vertex3(vertexBuffer[i]);
                 }
 
@@ -185,11 +207,11 @@ namespace EasyModMine.RenderEngine
             if(time >= 120)
             {
                 time = 0;
-                LevelGenerator.UpdateLevel(this);
+                //LevelGenerator.UpdateLevel(this,level);
             }
         }
 
-        public void UpdateBuffers(Vector3[] vertices,Vector2[] uvs,Vector3[] normals)
+        public void UpdateBuffers(Vector3[] vertices,Vector2[] uvs,Vector3[] normals,Texture2D[] textures,Color[] colors)
         {
             //Vertex buffer
 
@@ -213,6 +235,9 @@ namespace EasyModMine.RenderEngine
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
 
             Console.WriteLine("Buffers updated");
+
+            this.textures = textures;
+            this.colors = colors;
         }
     }
 }

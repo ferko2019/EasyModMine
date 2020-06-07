@@ -138,9 +138,15 @@ namespace _3DVoxelEngine.GameLogic
             List<Vector3> finalVertices = new List<Vector3>();
             List<Vector3> finalNormals = new List<Vector3>();
             List<Vector2> finalUV = new List<Vector2>();
+            List<Texture2D> textures = new List<Texture2D>();
+            List<Color> colors = new List<Color>();
+            Random rnd = new Random();
+            Texture2D texture = LoadResources.ReadTexture(Directory.GetCurrentDirectory() + @"\Mods\Default\Textures\rock.jpg");
             foreach (int vert_index in faces)
             {
                 finalVertices.Add(localVertices[vert_index - 1]);
+                textures.Add(texture);
+                colors.Add(Color.FromArgb(255, rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255)));
             }
 
             foreach (int uv_index in uvIndex)

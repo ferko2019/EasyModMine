@@ -18,19 +18,20 @@ namespace EasyModMine
     {
         static void Main(string[] args)
         {
-            Modell mesh = LoadResources.ReadModell(Directory.GetCurrentDirectory() + @"\Mods\Default\Modells\earth.obj");//LoadObj.LoadModellFromObj(Directory.GetCurrentDirectory()+@"\Mods\Default\Modells\cube.obj");
+            Modell mesh = LoadResources.ReadModell(Directory.GetCurrentDirectory() + @"\Mods\Default\Modells\cube.obj");//LoadObj.LoadModellFromObj(Directory.GetCurrentDirectory()+@"\Mods\Default\Modells\cube.obj");
             GameWindow window = new GameWindow(640,480);
+            List<GameObject>[] localLevel = LevelGenerator.GenerateTerrain3D(20, 20, 20, .05f, 0, .5f);
             OpenGlRenderer renderer = new OpenGlRenderer(window);
             renderer.ImmediateRendering = false;
             renderer.Quad = false;
             GameObject obj = new GameObject("test",new Vector3(1,3,2),Vector3.Zero,Vector3.One,mesh);
-            renderer.level = LevelGenerator.GenerateTerrain3D(100, 100,100, .05f, 0,.5f);
+            renderer.level = localLevel;
             //Console.WriteLine(renderer.level.Length);
-            Modell combined = CombineModells.Combine(CombineModells.GameObjectToModellArray(ChunksToGameObjects(NearChunck(renderer.level.ToArray(),renderer.player_pos,50)).ToArray()));
+            Modell combined = CombineModells.Combine(CombineModells.GameObjectToModellArray(ChunksToGameObjects(NearChunck(renderer.level.ToArray(),renderer.player_pos,9999)).ToArray()));
             //Console.WriteLine(combined.vertices.Length);
             //Console.WriteLine(combined.uv.Length);
             //Console.WriteLine(combined.normal.Length);
-            renderer.UpdateBuffers(combined.vertices, combined.uv, combined.normal);
+            renderer.UpdateBuffers(combined.vertices, combined.uv, combined.normal,combined.textures,combined.colors);
             window.Run(1/ DisplayDevice.Default.RefreshRate);
         }
 

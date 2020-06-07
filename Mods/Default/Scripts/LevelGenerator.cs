@@ -23,7 +23,7 @@ namespace EasyModMine.Mods.Default.Scripts
                     string type = "none";
                     float y = 0;
                     Modell cube = LoadResources.ReadModell(Directory.GetCurrentDirectory() + @"\Mods\Default\Modells\cube.obj");
-                    GameObject currentBlock = new GameObject(x + "." + z + "." + type, new Vector3(x, y, z), Vector3.Zero, new Vector3(.5f,.5f,.5f), cube);
+                    GameObject currentBlock = new GameObject(x + "." + z + "." + type, new Vector3(x, y, z), Vector3.Zero, new Vector3(1,1,1), cube);
                     //Console.WriteLine(new Vector3(x, y, z));
                     gameObjects.Add(currentBlock);
                 }
@@ -86,14 +86,14 @@ namespace EasyModMine.Mods.Default.Scripts
             return (float)abc / 6f;
         }
 
-        public static void UpdateLevel(OpenGlRenderer renderer)
+        public static void UpdateLevel(OpenGlRenderer renderer,List<GameObject>[] level)
         {
             //Console.WriteLine(renderer.level.Length);
-            Modell combined = CombineModells.Combine(CombineModells.GameObjectToModellArray(Init.ChunksToGameObjects(Init.NearChunck(renderer.level.ToArray(), renderer.player_pos, 50)).ToArray()));
+            Modell combined = CombineModells.Combine(CombineModells.GameObjectToModellArray(Init.ChunksToGameObjects(Init.NearChunck(level.ToArray(), renderer.player_pos, 50)).ToArray()));
             //Console.WriteLine(combined.vertices.Length);
             //Console.WriteLine(combined.uv.Length);
             //Console.WriteLine(combined.normal.Length);
-            renderer.UpdateBuffers(combined.vertices, combined.uv, combined.normal);
+            //renderer.UpdateBuffers(combined.vertices, combined.uv, combined.normal);
         }
     }
 }
