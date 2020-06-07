@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.IO;
 using _3DVoxelEngine.GameLogic;
 using EasyModMine.Mods.Default.Scripts;
+using OpenTK.Graphics.OpenGL;
 
 namespace EasyModMine
 {
@@ -23,7 +24,7 @@ namespace EasyModMine
             renderer.ImmediateRendering = false;
             renderer.Quad = false;
             GameObject obj = new GameObject("test",new Vector3(1,3,2),Vector3.Zero,Vector3.One,mesh);
-            List<GameObject>[] level = LevelGenerator.GenerateTerrain3D(100, 100,100, .05f, 0,.5f);
+            = LevelGenerator.GenerateTerrain3D(100, 100,100, .05f, 0,.5f);
             Console.WriteLine(level.Length);
             Modell combined = CombineModells.Combine(CombineModells.GameObjectToModellArray(ChunksToGameObjects(NearChunck(level.ToArray(),renderer.player_pos,50)).ToArray()));
             Console.WriteLine(combined.vertices.Length);

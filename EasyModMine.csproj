@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltInGameLogic\CombineModells.cs" />
+    <Compile Include="BuiltInGameLogic\GameData.cs" />
     <Compile Include="BuiltInGameLogic\Input.cs" />
     <Compile Include="BuiltInGameLogic\LoadAsset.cs" />
     <Compile Include="BuiltInGameLogic\LoadResources.cs" />
