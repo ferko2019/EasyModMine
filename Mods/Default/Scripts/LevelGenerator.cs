@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using OpenTK;
 using _3DVoxelEngine.GameLogic;
 using System.IO;
+using EasyModMine.RenderEngine;
 
 namespace EasyModMine.Mods.Default.Scripts
 {
@@ -83,6 +84,16 @@ namespace EasyModMine.Mods.Default.Scripts
 
             double abc = ab + bc + ac + ba + cb + ca;
             return (float)abc / 6f;
+        }
+
+        public static void UpdateLevel(OpenGlRenderer renderer)
+        {
+            //Console.WriteLine(renderer.level.Length);
+            Modell combined = CombineModells.Combine(CombineModells.GameObjectToModellArray(Init.ChunksToGameObjects(Init.NearChunck(renderer.level.ToArray(), renderer.player_pos, 50)).ToArray()));
+            //Console.WriteLine(combined.vertices.Length);
+            //Console.WriteLine(combined.uv.Length);
+            //Console.WriteLine(combined.normal.Length);
+            renderer.UpdateBuffers(combined.vertices, combined.uv, combined.normal);
         }
     }
 }

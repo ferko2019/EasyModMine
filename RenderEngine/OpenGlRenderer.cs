@@ -10,6 +10,7 @@ using EasyModMine.RenderEngine;
 using EasyModMine.BuiltInGameLogic;
 using System.IO;
 using _3DVoxelEngine.GameLogic;
+using EasyModMine.Mods.Default.Scripts;
 
 namespace EasyModMine.RenderEngine
 {
@@ -45,6 +46,12 @@ namespace EasyModMine.RenderEngine
         //Player data
 
         public Vector3 player_pos;
+
+        //Level
+
+        public List<GameObject>[] level;
+
+        int time = 0;
 
         public OpenGlRenderer(GameWindow window)
         {
@@ -171,9 +178,15 @@ namespace EasyModMine.RenderEngine
                 GL.DrawArrays(type, 0, vertexBuffer.Length);
             }
 
+            time++;
             // Swap buffers
             GL.Flush();
             window.SwapBuffers();
+            if(time >= 120)
+            {
+                time = 0;
+                LevelGenerator.UpdateLevel(this);
+            }
         }
 
         public void UpdateBuffers(Vector3[] vertices,Vector2[] uvs,Vector3[] normals)

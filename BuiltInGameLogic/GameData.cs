@@ -8,6 +8,6 @@ namespace EasyModMine.BuiltInGameLogic
 {
     class GameData
     {
-        public List<GameObject>[] level;
+
     }
 }
