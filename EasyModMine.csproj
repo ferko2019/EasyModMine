@@ -183,11 +183,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuiltInGameLogic\CombineModells.cs" />
+    <Compile Include="BuiltInGameLogic\Input.cs" />
     <Compile Include="BuiltInGameLogic\LoadAsset.cs" />
     <Compile Include="BuiltInGameLogic\LoadResources.cs" />
     <Compile Include="BuiltInGameLogic\Modell.cs" />
+    <Compile Include="BuiltInGameLogic\Noise.cs" />
     <Compile Include="Init.cs" />
     <Compile Include="BuiltInGameLogic\GameObject.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Mods\Default\Scripts\LevelGenerator.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -196,6 +202,9 @@
     <Compile Include="RenderEngine\Texture2D.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Mods\Default\Textures\car.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Mods\Default\Textures\earth.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -209,11 +218,24 @@
     <Content Include="Mods\Default\Modells\cube.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Mods\Default\Modells\tri.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mods\Default\Modells\plane.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mods\Default\Modells\tree.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mods\Default\Modells\Chevrolet_Camaro_SS_Low.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mods\Default\Modells\car.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mods\Default\Scripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

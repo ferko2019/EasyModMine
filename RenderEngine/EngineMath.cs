@@ -15,5 +15,18 @@ namespace EasyModMine.RenderEngine
         {
             return angle * 0.0174532925f;
         }
+
+        public static Vector2 RotateVector(Vector2 v, float degrees)
+        {
+            double a = degrees * 0.0174532925;
+            double sin = Math.Sin(a);
+            double cos = Math.Cos(a);
+
+            float tx = v.X;
+            float ty = v.Y;
+            v.X = ((float)cos * tx) - ((float)sin * ty);
+            v.Y = ((float)sin * tx) + ((float)cos * ty);
+            return v;
+        }
     }
 }

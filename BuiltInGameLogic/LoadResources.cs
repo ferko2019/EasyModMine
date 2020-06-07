@@ -31,8 +31,12 @@ namespace _3DVoxelEngine.GameLogic
             return Scripts;
         }
 
-        public static Modell ReadModells(string path)
+        public static Modell ReadModell(string path)
         {
+            if (!File.Exists(path))
+            {
+                throw new Exception("File was not exist");
+            }
             string[] lines = File.ReadAllLines(path);
             List<Vector3> localVertices = new List<Vector3>();
             List<Vector2> uv = new List<Vector2>();
@@ -141,7 +145,7 @@ namespace _3DVoxelEngine.GameLogic
 
             foreach (int uv_index in uvIndex)
             {
-                finalUV.Add(uv[uv_index - 1]);
+                finalUV.Add(EngineMath.RotateVector(uv[uv_index - 1], 180));
             }
 
             foreach (int normal_index in normalIndexes)
@@ -165,8 +169,9 @@ namespace _3DVoxelEngine.GameLogic
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
                 pixelated ? (int)TextureMinFilter.Nearest : (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
                 pixelated ? (int)TextureMagFilter.Nearest : (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
             return new Texture2D(id, new Vector2(bmp.Width, bmp.Height));
         }
 

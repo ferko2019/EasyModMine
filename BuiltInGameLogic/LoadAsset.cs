@@ -34,6 +34,7 @@ namespace EasyModMine.BuiltInGameLogic
                 TextureMinFilter.Nearest : (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, pixelated ? (int)
                 TextureMagFilter.Nearest : (int)TextureMagFilter.Linear);
+            GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
             return new Texture2D(id, new Vector2(bmp.Width, bmp.Height));
         }

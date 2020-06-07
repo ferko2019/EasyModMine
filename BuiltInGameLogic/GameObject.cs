@@ -24,5 +24,19 @@ namespace EasyModMine.BuiltInGameLogic
             this.scale = scale;
             this.modell = modell;
         }
+
+        public Modell ToTransformed()
+        {
+            Modell new_modell = new Modell();
+            new_modell.vertices = modell.vertices;
+            for (int i = 0; i < this.modell.vertices.Length; i++)
+            {
+                new_modell.vertices[i] *= scale;
+                new_modell.vertices[i] += position;
+            }
+            new_modell.uv = this.modell.uv;
+            new_modell.normal = this.modell.normal;
+            return new_modell;
+        }
     }
 }
